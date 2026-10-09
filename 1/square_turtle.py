@@ -2,29 +2,47 @@ import turtle
 import math
 
 
-def bump(lenght):
-  turtle.forward(lenght*0.4)
+def bump(length):
+  turtle.forward(length*0.4)
   turtle.right(90)
-  turtle.forward(0.1*lenght)
+  turtle.forward(0.1*length)
   turtle.left(90)
-  turtle.forward(lenght*0.2)
+  turtle.forward(length*0.2)
   turtle.left(90)
-  turtle.forward(0.1*lenght)
+  turtle.forward(0.1*length)
   turtle.right(90)
-  turtle.forward(lenght*0.4)
+  turtle.forward(length*0.4)
 
-def straight(lenght):
-  turtle.forward(lenght)
+def straight(length):
+  turtle.forward(length)
+
+
+
+n = 0
+
+def fractal(angle=0, length=150, sides=4):
+
+  global n
+  turtle.forward(0.6*length)
+  for i in range(sides-2):
+    turtle.setheading(angle+360/sides*i)
+    if n < 3:
+      n += 1
+      fractal(angle = 0, length=length*0.2, sides=sides)
+    else:
+      break
+
+
 
 
 #draw a square with the position of a vertex, the angle of rotation, and length
-def draw_polygon_vertex(x=0, y=0, angle=0, lenght=150, sides=4, side_shape = straight):
+def draw_polygon_vertex(x=0, y=0, angle=0, length=150, sides=4, side_shape = straight):
 
   turtle.teleport(x,y)
   turtle.setheading(angle)
   
   for i in range(sides):
-    side_shape(lenght)
+    side_shape(length)
     turtle.left(360/sides)
 
 
