@@ -2,47 +2,42 @@ import turtle
 import math
 
 
-def bump(length):
-  turtle.forward(length*0.4)
+def bump(lenght):
+  turtle.forward(lenght*0.4)
   turtle.right(90)
-  turtle.forward(0.1*length)
+  turtle.forward(0.1*lenght)
   turtle.left(90)
+  turtle.forward(lenght*0.2)
+  turtle.left(90)
+  turtle.forward(0.1*lenght)
+  turtle.right(90)
+  turtle.forward(lenght*0.4)
+
+def pulse(length):
+  turtle.forward(length*0.4)
+  turtle.left(60)
+  turtle.forward(length*0.1)
+  turtle.right(60)
   turtle.forward(length*0.2)
-  turtle.left(90)
-  turtle.forward(0.1*length)
-  turtle.right(90)
-  turtle.forward(length*0.4)
+  turtle.left(60)
+  turtle.forward(length*0.1)
+  turtle.right(60)
+  turtle.forward(length*(0.6-4*math.sin(60)*0.1))
 
-def straight(length):
-  turtle.forward(length)
-
-
-
-n = 0
-
-def fractal(angle=0, length=150, sides=4):
-
-  global n
-  turtle.forward(0.6*length)
-  for i in range(sides-2):
-    turtle.setheading(angle+360/sides*i)
-    if n < 3:
-      n += 1
-      fractal(angle = 0, length=length*0.2, sides=sides)
-    else:
-      break
-
-
+def straight(lenght):
+  turtle.forward(lenght)
 
 
 #draw a square with the position of a vertex, the angle of rotation, and length
-def draw_polygon_vertex(x=0, y=0, angle=0, length=150, sides=4, side_shape = straight):
+def draw_polygon_vertex(x=0, y=0, angle=0, lenght=150, sides=4, side_shape = straight):
 
   turtle.teleport(x,y)
   turtle.setheading(angle)
-  
-  for i in range(sides):
-    side_shape(length)
+
+  segments=generate_segments(sides, lenght)
+
+  for angle,lenght in segments:
+    side_shape(lenght)
     turtle.left(360/sides)
 
 
@@ -56,10 +51,28 @@ def center_to_vertex(x_cen, y_cen, angle, length, sides=4):
   x_ver = x_cen - distance * math.cos(start_angle)
   y_ver = y_cen - distance * math.sin(start_angle)
 
-  turtle.teleport(x_ver, y_ver)
-  turtle.setheading(angle)
-
   return x_ver, y_ver
+
+def vertexes_position(x_cen, y_cen, angle, length, sides=4):
+  x_ver, y_ver = center_to_vertex(x_cen, y_cen, angle, length, sides)
+
+  vertexes=[]
+
+  for i in range(sides):
+    vertexes.append((x_ver, y_ver))
+    x_ver += length * math.cos(math.radians(angle + 360 * (i + 1) / sides))
+    y_ver += length * math.sin(math.radians(angle + 360 * (i + 1) / sides))
+  return vertexes
+
+def generate_segments(sides, lenght):
+  segments = []
+  
+  for i in range(sides):
+
+    angle = 360 / sides
+    segments.append((angle, lenght))
+    
+  return segments
 
 def draw_polygon_center(x_cen=0, y_cen=0, angle=0, length=150, sides=4, side_shape = straight):
 
