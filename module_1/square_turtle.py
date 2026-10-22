@@ -55,13 +55,17 @@ def center_to_vertex(x_cen, y_cen, angle, length, sides=4):
 
 def vertexes_position(x_cen, y_cen, angle, length, sides=4):
   x_ver, y_ver = center_to_vertex(x_cen, y_cen, angle, length, sides)
+  radius = length / (2 * math.sin(math.radians(180 / sides)))
 
   vertexes=[]
 
   for i in range(sides):
-    vertexes.append((x_ver, y_ver))
-    x_ver += length * math.cos(math.radians(angle + 360 * (i + 1) / sides))
-    y_ver += length * math.sin(math.radians(angle + 360 * (i + 1) / sides))
+
+        theta = math.radians(angle + 360 * i / sides)
+        x = x_cen + radius * math.cos(theta)
+        y = y_cen + radius * math.sin(theta)
+        vertexes.append((x, y))
+
   return vertexes
 
 def generate_segments(sides, lenght):
